@@ -37,52 +37,24 @@ class MainActivity : AppCompatActivity() {
         note[KEY_TITLE] = title
         note[KEY_DESCRIPTION] = description
 
+       insertData()
+    }
+
+    private fun insertData() {
+        val note: MutableMap<String, Any> = HashMap()
+        note[KEY_TITLE] = "title"
+        note[KEY_DESCRIPTION] = "sample description"
+
         db.collection("Notebook").document("My First Note").set(note)
             .addOnSuccessListener {
-                showStatus("Insert Query successful")
-                insertData()
+                showStatus("data added successfully")
             }
             .addOnFailureListener { e ->
                 showStatus("Error in insert query $e")
             }
-    }
-
-    private fun insertData() {
-        val sampleData : ArrayList<String> = arrayListOf(
-            "sample1",
-            "sample2",
-            "sample3",
-            "sample4",
-            "sample5",
-            "sample6",
-            "sample7",
-            "sample8",
-            "sample9",
-            "sample10"
-        )
-
-        showStatus("Insert Query started for 1000 sample data")
-        val start = System.nanoTime()
-        val count = 1000
-        for (i in 1..count){
-            sampleData.shuffle()
-            val note: MutableMap<String, Any> = HashMap()
-            note[KEY_TITLE] = "title $i"
-            note[KEY_DESCRIPTION] = sampleData[0]
-
-            db.collection("Notebook $i").document("My First Note").set(note)
-                .addOnSuccessListener {
-
-                }
-                .addOnFailureListener { e ->
-                    showStatus("Error in insert query $e")
-                }
-
-        }
-        showStatus("Insert Query successful")
-        showStatus("time taken to add 1000 data: ${System.nanoTime() - start} nanoseconds")
 
     }
+
 
     private fun showStatus(text: String) {
         Log.i("Status", text)
